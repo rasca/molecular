@@ -1,3 +1,4 @@
+///// Sensor /////
 #include <NewPing.h>
 
 #define TRIGGER_PIN 12
@@ -6,38 +7,38 @@
 
 NewPing sonar(TRIGGER_PIN, ECHO_PIN, MAX_DISTANCE);
 
+///// First order filter /////
+///// and ignore first zeroes /////
+const double alpha = 0.051;
+const int zeroes_threshold = 15;
+int zeroes_count = 0;
+
+double measurament;
+double filtered = 0;
+
 void setup()
 {
   Serial.begin(9600);
 }
 
-const double alpha = 0.1;
-double result = 0;
-
-double cm;
-double cm_smooth = 0;
-
-int zeroes_count = 0;
-int zeroes_threshold = 5;
-
 void loop()
 {
   delay(60);
-  cm = sonar.ping_cm();
+  measurament = sonar.ping_cm();
   
-  if (cm == 0) {
+  if (measurament == 0) {
     zeroes_count++;
   } else {
     zeroes_count = 0;
   }
 
   if (zeroes_count == 0 || zeroes_count > zeroes_threshold) {
-    cm_smooth = cm_smooth * (1  - alpha) + cm * alpha;
+    filtered = filtered * (1  - alpha) + measurament * alpha;
   }
 
-  Serial.print("cm: ");
-  Serial.print(cm);
+  Serial.print("measurament: ");
+  Serial.print(measurament);
   Serial.print(" smooth: ");
-  Serial.println(cm_smooth);
+  Serial.println(filtered);
 
 }
