@@ -24,6 +24,7 @@ public:
     void setup()
     {
         startTime = millis();
+        pinMode(LED_BUILTIN, OUTPUT);
     }
 
     void restart()
@@ -43,6 +44,12 @@ public:
     int measure()
     {
         measurament = sonar.ping_cm();
+        if (measurament > 0)
+        {
+            digitalWrite(LED_BUILTIN, HIGH);
+        } else {
+            digitalWrite(LED_BUILTIN, LOW);
+        }
 
         // disregard first (zero_threshold)
         if (measurament == 0)

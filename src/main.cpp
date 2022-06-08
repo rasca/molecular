@@ -1,5 +1,5 @@
-#define COLUMN
-// #define SLICE
+// #define COLUMN
+#define SLICE
 
 #include <config.h>
 #include <sensor.h>
@@ -14,7 +14,7 @@ void setup()
 {
   Serial.begin(9600);
 
-  // sensor.setup();
+  sensor.setup();
   ledsSetup();
 }
 
