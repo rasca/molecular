@@ -1,9 +1,10 @@
-// #define COLUMN
-#define SLICE
+#define COLUMN
+// #define SLICE
 
 #include <config.h>
 #include <sensor.h>
 #include <leds.h>
+#include <comms.h>
 
 #if defined(SLICE)
   Sensor sensor;
@@ -14,8 +15,19 @@ void setup()
 {
   Serial.begin(9600);
 
-  sensor.setup();
   ledsSetup();
+
+  #if defined(SLICE)
+    sensor.setup();
+  #endif
+
+  #if defined(COLUMN)
+    setupWifiServer();
+  #endif
+
+  #if defined(SLICE)
+    setupWifiClient();
+  #endif
 }
 
 void loop()

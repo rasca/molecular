@@ -29,7 +29,7 @@ void ledsSetup()
   Serial.begin(9600);
   // LEDS
   FastLED.addLeds<WS2812, GPIO_NUM_15>(leds, NUM_LEDS * NUM_SEGMENTS);
-  FastLED.setBrightness(255);
+  FastLED.setBrightness(204);
 
   startTime = millis();
   for (int i=0; i<NUM_SEGMENTS; i++)
@@ -86,22 +86,22 @@ void tick_slice(int level)
 #define TAIL_NUM 4
 int pos = 0;
 
-bool paint(int pos, CRGB color, double intensity)
+bool paint(int pos, CRGB color, int intensity)
 {
   // check if we are in a valid range
-  if (pos > 0 && pos < NUM_LEDS / 2)
+  if (pos >= 0 && pos < NUM_LEDS / 2)
   {
     // the string is folded in two
     // paint half of the string
-    leds[pos].r = color.r * intensity;
-    leds[pos].g = color.g * intensity;
-    leds[pos].b = color.b * intensity;
+    leds[pos].r = scale8(color.r, intensity);
+    leds[pos].g = scale8(color.g, intensity);
+    leds[pos].b = scale8(color.b, intensity);
 
     int mirror_pos = NUM_LEDS - 1 - pos;
     // paint the other half
-    leds[mirror_pos].r = color.r * intensity;
-    leds[mirror_pos].g = color.g * intensity;
-    leds[mirror_pos].b = color.b * intensity;
+    leds[mirror_pos].r = scale8(color.r, intensity);
+    leds[mirror_pos].g = scale8(color.g, intensity);
+    leds[mirror_pos].b = scale8(color.b, intensity);
   }
 }
 
@@ -130,23 +130,23 @@ void tick_column()
 
   FastLED.clear();
   CRGB color = CRGB(255, 75, 75);
-  paint(pos, color, 1);
+  paint(pos, color, 255);
 
-  for (int i = 1 ; i < TAIL_NUM; i++)
+  for (int i = 1 ; i <= TAIL_NUM; i++)
   {
-    paint(pos - i, color, pow(.3, i));
-    paint(pos + i, color, pow(.3, i));
+    paint(pos - i, color, 255 - 255 / (TAIL_NUM + 1) * i);
+    paint(pos + i, color, 255 - 255 / (TAIL_NUM + 1) * i);
   }
   FastLED.show();
 
   if (millis() - startTime > duration)
   {
     // cicle between NUM_LEDS+TAIL_NUM..-TAIL_NUM
-    pos--;
+    pos++;
     startTime = millis();
-    if (pos < -TAIL_NUM) 
+    if (pos >= NUM_LEDS / 2 + TAIL_NUM + 2) 
     {
-      pos = NUM_LEDS / 2 + TAIL_NUM;
+      pos = -TAIL_NUM - 1;
       restart();
     }
   }
