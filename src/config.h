@@ -2,10 +2,12 @@
 #define CONFIG_H_INCLUDED
 
 #define NUM_LEDS 50
-#define NUM_SEGMENTS 7
-
-#include <FastLED.h>
-#include <array>
+#if defined(SLICE)
+  #define NUM_SEGMENTS 7
+#endif
+#if defined(COLUMN)
+  #define NUM_SEGMENTS 1
+#endif
 
 /*
 int programs_current = 0;

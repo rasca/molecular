@@ -1,7 +1,14 @@
+#define COLUMN
+// #define SLICE
+
+#include <config.h>
 #include <sensor.h>
 #include <leds.h>
 
-Sensor sensor;
+#if defined(SLICE)
+  Sensor sensor;
+#endif
+
 
 void setup()
 {
@@ -13,6 +20,11 @@ void setup()
 
 void loop()
 {
-  sensor.measure();
-  tick(sensor.level);
+  #if defined(SLICE)
+    sensor.measure();
+    tick_slice(sensor.level);
+  #endif
+  #if defined(COLUMN)
+    tick_column();
+  #endif
 }
