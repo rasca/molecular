@@ -1,5 +1,5 @@
-#define COLUMN
-// #define SLICE
+// #define COLUMN
+#define SLICE
 
 #include <config.h>
 #include <sensor.h>
@@ -34,6 +34,7 @@ void loop()
 {
   #if defined(SLICE)
     sensor.measure();
+    setLevel(sensor.level);
     tick_slice(sensor.level);
   #endif
   #if defined(COLUMN)

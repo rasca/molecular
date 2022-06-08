@@ -144,7 +144,7 @@ void tick_column()
     // cicle between NUM_LEDS+TAIL_NUM..-TAIL_NUM
     pos++;
     startTime = millis();
-    if (pos >= NUM_LEDS / 2 + TAIL_NUM + 2) 
+    if (pos >= NUM_LEDS / 2 + TAIL_NUM) 
     {
       pos = -TAIL_NUM - 1;
       restart();

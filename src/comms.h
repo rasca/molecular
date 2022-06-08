@@ -80,16 +80,47 @@ String httpGETRequest(const char* serverName) {
   String payload = "--";
 
   if (httpResponseCode>0) {
-    Serial.print("HTTP Response code: ");
-    Serial.println(httpResponseCode);
+    // Serial.print("HTTP Response code: ");
+    // Serial.println(httpResponseCode);
     payload = http.getString();
   }
   else {
-    Serial.print("Error code: ");
-    Serial.println(httpResponseCode);
+    // Serial.print("Error code: ");
+    // Serial.println(httpResponseCode);
   }
   // Free resources
   http.end();
 
   return payload;
+}
+
+void httpPOSTRequest(const char* serverName, int level) {
+  HTTPClient http;
+
+  // Your IP address with path or Domain name with URL path
+  http.begin(serverName);
+
+  // Send HTTP POST request
+  http.addHeader("Content-Type", "application/x-www-form-urlencoded");
+
+  char message[50];
+  snprintf(message, 50, "slice=%d&level=%d&", SLICE_NUM, level);
+  int httpResponseCode = http.POST(message);
+
+  if (httpResponseCode>0) {
+    // Serial.print("HTTP Response code: ");
+    // Serial.println(httpResponseCode);
+    // payload = http.getString();
+  }
+  else {
+    // Serial.print("Error code: ");
+    // Serial.println(httpResponseCode);
+  }
+  // Free resources
+  http.end();
+}
+
+void setLevel(int level)
+{
+  httpPOSTRequest(serverNameLevel, level);
 }

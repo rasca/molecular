@@ -89,7 +89,7 @@ public:
             level = 100;
         }
 
-        printDebug();
+        // printDebug();
 
         return level;
     }
