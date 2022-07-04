@@ -26,7 +26,7 @@ void setup()
   #endif
 
   #if defined(SLICE)
-    setupWifiClient();
+    // setupWifiClient();
   #endif
 }
 
@@ -34,7 +34,7 @@ void loop()
 {
   #if defined(SLICE)
     sensor.measure();
-    setLevel(sensor.level);
+    // setLevel(sensor.level);
     tick_slice(sensor.level);
   #endif
   #if defined(COLUMN)
